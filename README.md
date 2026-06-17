@@ -1,111 +1,266 @@
+# Mall Customer Segmentation
 
-# Customer Segmentation – Mall Customers
+##  Unsupervised Machine Learning for Customer Behavior Analysis
+
+![Python](https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge\&logo=python)
+![Clustering](https://img.shields.io/badge/Unsupervised%20Learning-Clustering-red?style=for-the-badge)
+![KMeans](https://img.shields.io/badge/Algorithm-KMeans-orange?style=for-the-badge)
+![Streamlit](https://img.shields.io/badge/App-Streamlit-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Project-Completed-success?style=for-the-badge)
+
+ 
 
 ##  Project Overview
 
-This project focuses on **customer segmentation** using unsupervised machine learning.
-The goal is to group mall customers based on their purchasing behavior so that marketing strategies can be better targeted.
+This project applies **Unsupervised Machine Learning (K-Means Clustering)** to segment mall customers based on their:
 
-We use the **K-Means Clustering algorithm** to identify meaningful customer groups from behavioral and demographic data.
+* Annual Income
+* Spending Score
+* Age
 
----
+The goal is to identify **distinct customer groups** to help businesses design **targeted marketing strategies**, improve customer engagement, and maximize revenue.
 
-##  Dataset Information
+This project follows a **production-style ML pipeline**, including:
 
-The dataset is created purely for learning purposes and represents customers of a supermarket mall.
+* Modular code structure
+* Training pipeline (`train.py`)
+* Model persistence
+* Streamlit deployment-ready app
 
-It includes the following features:
-
-* **CustomerID** → Unique identifier for each customer
-* **Gender** → Male / Female
-* **Age** → Age of the customer
-* **Annual Income (k$)** → Yearly income in thousands
-* **Spending Score (1–100)** → Score assigned based on customer spending behavior and purchasing patterns
-
----
+ 
 
 ##  Problem Statement
 
-As a mall owner, the goal is to understand your customers and identify:
+Retail businesses generate large volumes of customer data but often fail to convert it into actionable insights.
 
-* Which customers are most valuable
-* Which customers are frequent spenders
-* Which customers can be targeted easily by marketing campaigns
+Without segmentation:
 
-This helps in designing **effective marketing strategies** and improving customer engagement.
+* Marketing campaigns are generic
+* Customer targeting is inefficient
+* Revenue opportunities are missed
 
----
+This project solves this by applying **clustering techniques to group similar customers** based on behavior patterns.
 
-##  Machine Learning Approach
+ 
 
-We use **Unsupervised Learning** since we do not have labeled outputs.
+##  Objectives
 
-### Algorithm Used:
+* Perform Exploratory Data Analysis (EDA)
+* Understand customer distribution patterns
+* Apply K-Means clustering algorithm
+* Identify optimal clusters using Elbow Method
+* Build a reproducible ML training pipeline
+* Deploy an interactive Streamlit dashboard
+* Extract actionable business insights
 
-* K-Means Clustering
+ 
 
-### Why K-Means?
+##  Project Architecture
 
-* Simple and efficient for segmentation
-* Works well with numerical customer data
-* Helps identify hidden patterns in spending behavior
+```text id="project-structure"
+Mall-Customer-Segmentation/
+│
+├── data/
+│   ├── Mall_Customers.csv
+│   └── clustered_customers.csv
+│
+├── notebooks/
+│   ├── 01_eda_analysis.ipynb
+│   └── 02_kmeans_clustering.ipynb
+│
+├── src/
+│   ├── data_loader.py
+│   ├── preprocessing.py
+│   ├── clustering.py
+│   ├── visualization.py
+│   ├── train.py
+│   ├── predict.py
+│   └── utils.py
+│
+├── app/
+│   └── streamlit_app.py
+│
+├── models/
+│   └── kmeans_model.pkl
+│
+├── reports/
+│   └── figures/
+│
+├── requirements.txt
+└── README.md
+```
 
----
+ 
 
-##  Workflow
+##  Machine Learning Pipeline
 
-1. Import and explore dataset
-2. Perform exploratory data analysis (EDA)
-3. Select important features (e.g., Income, Spending Score)
-4. Determine optimal number of clusters using **Elbow Method**
-5. Apply K-Means clustering
-6. Visualize customer segments
-7. Interpret and analyze clusters
+###  Step 1: Data Loading
 
----
+Load and inspect customer dataset.
 
-##  Expected Outcome
+###  Step 2: Exploratory Data Analysis (EDA)
 
-After clustering, customers are grouped into segments such as:
+* Age distribution
+* Income distribution
+* Spending score analysis
+* Correlation heatmaps
 
-* High income – high spending 
-* High income – low spending
-* Low income – high spending
-* Low income – low spending
+###  Step 3: Feature Selection
 
-These insights help the marketing team:
+Key features used:
 
-* Personalize offers
-* Improve customer retention
-* Increase sales conversion
+* Annual Income (k$)
+* Spending Score (1–100)
 
----
+###  Step 4: Optimal Cluster Selection
 
-##  Technologies Used
+* Elbow Method used to determine best K value
+* WCSS (Within-Cluster Sum of Squares) analysis
 
-* Python 
-* Pandas
-* NumPy
-* Matplotlib / Seaborn
-* Scikit-learn
+###  Step 5: Model Training
 
----
+* KMeans clustering algorithm
+* Final model trained with optimal clusters (K=5)
 
-## How to Run the Project
+###  Step 6: Model Persistence
 
-```bash
-# Clone the repository
-git clone https://github.com/your-username/customer-segmentation.git
+* Trained model saved using `joblib`
+* Reusable for inference and deployment
 
-# Move into directory
-cd customer-segmentation
+ 
+
+##  Training Pipeline
+
+The project includes a production-style training script:
+
+```bash id="train-command"
+python -m src.train
+```
+
+This script:
+
+* Loads data
+* Performs feature selection
+* Finds optimal clusters
+* Trains KMeans model
+* Saves model (`kmeans_model.pkl`)
+* Stores clustered dataset
+
+ 
+
+##  Customer Segments Identified
+
+The model identifies meaningful customer groups:
+
+*  **High Income – High Spending (VIP Customers)**
+*  **High Income – Low Spending (Careful Spenders)**
+*  **Low Income – High Spending (Impulse Buyers)**
+*  **Low Income – Low Spending (Budget Customers)**
+*  **Average Customers (Balanced Behavior)**
+
+ 
+
+##  Key Business Insights
+
+* High income does not always imply high spending
+* Spending behavior is independent of income levels
+* Customer segmentation enables personalized marketing
+* VIP customers are key revenue drivers
+* Budget customers respond better to discounts
+
+ 
+
+##  Streamlit Application
+
+An interactive web application allows users to:
+
+* Upload customer dataset
+* View clustered results
+* Explore customer segments visually
+* Analyze group distributions
+
+```bash id="streamlit-run"
+streamlit run app/streamlit_app.py
+```
+
+ 
+
+##  Visualizations
+
+* Elbow Method Curve
+* 2D Cluster Visualization
+* 3D Cluster Plot (Age, Income, Spending Score)
+* Distribution plots for all features
+* Correlation heatmap
+
+ 
+
+##  Tech Stack
+
+**Programming Language:** Python 
+**Data Processing:** Pandas, NumPy
+**Visualization:** Matplotlib, Seaborn
+**Machine Learning:** Scikit-learn (KMeans)
+**Deployment:** Streamlit
+**Model Persistence:** Joblib
+
+ 
+
+##  How to Run This Project
+
+```bash id="run-steps"
+# Clone repository
+git https://github.com/jeeva-anand/Mall-Customer-Segmentation
+
+# Navigate to project
+cd Mall-Customer-Segmentation
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the notebook or script
-jupyter notebook
+# Run training pipeline
+python -m src.train
+
+# Launch Streamlit app
+streamlit run app.py
 ```
 
----
+ 
 
+##  Real-World Applications
+
+* Customer segmentation in retail stores
+* Personalized marketing campaigns
+* Product recommendation systems
+* Customer behavior analytics
+* Business decision-making support
+
+ 
+
+##  Skills Demonstrated
+
+* Unsupervised Machine Learning
+* K-Means Clustering
+* Feature Engineering
+* Data Cleaning & Preprocessing
+* Data Visualization & Storytelling
+* Model Pipeline Design
+* Deployment using Streamlit
+
+ 
+
+##  Future Improvements
+
+* Add PCA-based dimensionality reduction
+* Compare multiple clustering algorithms (DBSCAN, Hierarchical)
+* Build advanced interactive dashboards
+* Integrate real-time customer analytics system
+* Deploy on cloud (AWS / Streamlit Cloud)
+
+ 
+
+
+
+# If You Like This Project
+
+Feel free to star ⭐ the repository and contribute improvements!
